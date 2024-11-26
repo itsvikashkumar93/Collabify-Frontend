@@ -16,8 +16,8 @@ const ActivityLog = () => {
   ];
 
   return (
-    <div className="h-full w-full rounded-md p-4 bg-gray-100">
-      <h2 className="text-lg font-bold mb-4">Recent Activity</h2>
+    <div className="h-full w-full rounded-md p-4 shadow-xl">
+      <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
       <ul>
         {activities.map((activity) => (
           <li key={activity.id} className="mb-2">

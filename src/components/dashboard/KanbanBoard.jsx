@@ -52,7 +52,7 @@ const KanbanBoard = () => {
   }, []);
 
   return (
-    <div className="h-full w-full rounded-md p-4 bg-gray-100 ">
+    <div className="h-full w-full rounded-md p-5 shadow-xl ">
       <div className="flex gap-10 w-full">
         <DndContext onDragEnd={handleDragEnd}>
           {columns.map((column, i) => (

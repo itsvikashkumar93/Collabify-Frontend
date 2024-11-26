@@ -3,6 +3,7 @@ import Home from "../components/home/Home";
 import Signup from "../components/user/Signup";
 import Login from "../components/user/Login";
 import Dashboard from "../components/dashboard/Dashboard";
+import Profile from "../components/user/Profile";
 const Routing = () => {
   return (
     <Routes>
@@ -10,6 +11,7 @@ const Routing = () => {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 };

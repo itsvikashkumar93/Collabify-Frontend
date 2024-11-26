@@ -21,7 +21,7 @@ const App = () => {
     // connectToBackend();
   }, []);
   return (
-    <div>
+    <div className="bg-[#F2F2F2]">
       <Navbar />
       <Routing />
     </div>

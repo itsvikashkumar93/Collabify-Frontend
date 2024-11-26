@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .toastBody {
   font-size: 1.1rem;
 }
