@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DndContext } from "@dnd-kit/core";
 import axios from "../../utils/axios";
 import Column from "./Column";
+import { toast } from "react-toastify";
 const KanbanBoard = () => {
   const [tasks, setTasks] = useState([]);
 
@@ -28,19 +29,31 @@ const KanbanBoard = () => {
     const taskId = active.id;
     const newStatus = over.id;
 
+    const previousTasks = [...tasks];
     setTasks((prev) =>
       prev.map((task) =>
         task._id === taskId ? { ...task, status: newStatus } : task
       )
     );
+
+    axios
+      .put(`/tasks/${taskId}`, { status: newStatus })
+      .then((res) => {
+        toast.success("Task moved successfully");
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Failed to move task");
+        setTasks(previousTasks);
+      });
   };
   useEffect(() => {
     getTasks();
   }, []);
 
   return (
-    <div className="h-[90vh] w-full p-4 bg-zinc-300 flex flex-col gap-4">
-      <div className="flex gap-10">
+    <div className="h-full w-full rounded-md p-4 bg-gray-100 ">
+      <div className="flex gap-10 w-full">
         <DndContext onDragEnd={handleDragEnd}>
           {columns.map((column, i) => (
             <Column
