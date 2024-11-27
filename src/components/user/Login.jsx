@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "../../utils/axios";
 const Login = () => {
@@ -20,7 +20,7 @@ const Login = () => {
       })
       .catch((err) => {
         toast.error(err.response.data.message);
-          console.log(err);
+        console.log(err);
       });
   };
   const handleGoogleSignup = () => {
@@ -35,7 +35,7 @@ const Login = () => {
       <div className="w-[30%] bg-[#ffffff] shadow-md px-12 py-8 rounded-sm">
         <h1 className="text-2xl font-semibold mb-4">Login</h1>
         <form
-          className="flex flex-col items-end justify-center gap-2"
+          className="flex flex-col items-start justify-center gap-2"
           onSubmit={handleSubmit}
         >
           <input
@@ -53,16 +53,29 @@ const Login = () => {
             required
           />
 
-          <button
-            className="px-5 py-1 mt-4 bg-blue-600 text-white rounded-sm"
-            type="submit"
-          >
-            Login
-          </button>
+          <div className="mt-1">
+            <span className="text-sm mr-1">No account?</span>
+            <Link to="/signup">
+              <span className="text-sm text-blue-600">Create one!</span>
+            </Link>
+          </div>
+
+          <div className="w-full flex justify-end">
+            <button
+              className="px-5 py-1 mt-3 bg-blue-600 text-white rounded-sm"
+              type="submit"
+            >
+              Login
+            </button>
+          </div>
         </form>
       </div>
       <div className="" onClick={handleGoogleSignup}>
-        <img className="h-12 cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg" src="/signup_with_google.png" alt="" />
+        <img
+          className="h-12 cursor-pointer hover:scale-105 transition-all duration-300 shadow-lg"
+          src="/signup_with_google.png"
+          alt=""
+        />
       </div>
     </div>
   );
