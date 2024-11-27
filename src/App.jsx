@@ -12,8 +12,10 @@ const App = () => {
     console.log(response);
   };
   useEffect(() => {
-    const token = new URLSearchParams(window.location.search).get("token");
-    if (token) {
+    const tokenGoogle = new URLSearchParams(window.location.search).get(
+      "token"
+    );
+    if (tokenGoogle) {
       toast.success("Login successful");
       localStorage.setItem("token", token);
       navigate("/");
@@ -22,7 +24,6 @@ const App = () => {
   }, []);
   return (
     <div className="bg-[#F2F2F2]">
-      <Navbar />
       <Routing />
     </div>
   );

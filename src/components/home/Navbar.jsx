@@ -17,9 +17,6 @@ const Navbar = () => {
         <Link to="/signup">
           <h5 className="text-lg font-semibold">Signup</h5>
         </Link>
-        <Link to="/login">
-          <h5 className="text-lg font-semibold">Login</h5>
-        </Link>
         <Link to="/profile">
           <h5 className="text-lg font-semibold">Profile</h5>
         </Link>

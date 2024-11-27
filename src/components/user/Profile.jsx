@@ -28,7 +28,7 @@ const Profile = () => {
       <div className="w-full h-[92vh] flex justify-center items-center">
         <div className="w-[50%] h-[80%] p-4">
           <h1 className="text-2xl font-semibold mb-4">Your Info</h1>
-          <div className="shadow-md p-4 rounded-md">
+          <div className="shadow-md p-4 rounded-md bg-[#ffffff]">
             <img
               src={user.profilePicture ? user.profilePicture : "avatar.png"}
               alt="avatar"
@@ -43,7 +43,7 @@ const Profile = () => {
               </Link>
             </div>
           </div>
-          <div className="shadow-md p-4 rounded-md mt-4">
+          <div className="shadow-md p-4 rounded-md mt-4 bg-[#ffffff]">
             <h5 className="font-semibold">Profile info</h5>
             <hr className="border-gray-300 my-3" />
             <div className="flex justify-between items-center gap-2">
