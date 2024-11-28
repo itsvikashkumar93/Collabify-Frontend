@@ -14,9 +14,6 @@ const Navbar = () => {
         <Link to="/dashboard">
           <h5 className="text-lg font-semibold">Dashboard</h5>
         </Link>
-        <Link to="/signup">
-          <h5 className="text-lg font-semibold">Signup</h5>
-        </Link>
         <Link to="/profile">
           <h5 className="text-lg font-semibold">Profile</h5>
         </Link>

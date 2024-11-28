@@ -2,8 +2,11 @@ import axios from "../../utils/axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { asyncSignUp } from "../../store/actions/AuthActions";
 const Signup = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -14,25 +17,40 @@ const Signup = () => {
     const phone = e.target.phone.value;
     const profilePicture = e.target.profilePicture.files[0];
     // console.log(name, username, bio, email, password, phone, profilePicture);
-    axios
-      .post("/auth/signup", {
-        name,
-        username,
-        bio,
-        email,
-        password,
-        phone,
-        // profilePicture,
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        localStorage.setItem("token", res.data.token);
-        navigate("/");
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-        //   console.log(err);
-      });
+
+    const userData = {
+      name,
+      username,
+      bio,
+      email,
+      password,
+      phone,
+      // profilePicture,
+    };
+
+    dispatch(asyncSignUp(userData));
+    navigate("/");
+
+    // axios
+    // axios
+    //   .post("/auth/signup", {
+    //     name,
+    //     username,
+    //     bio,
+    //     email,
+    //     password,
+    //     phone,
+    //     // profilePicture,
+    //   })
+    //   .then((res) => {
+    //     toast.success(res.data.message);
+    //     localStorage.setItem("token", res.data.token);
+    //     navigate("/");
+    //   })
+    //   .catch((err) => {
+    //     toast.error(err.response.data.message);
+    //     //   console.log(err);
+    //   });
   };
   const handleGoogleSignup = () => {
     try {

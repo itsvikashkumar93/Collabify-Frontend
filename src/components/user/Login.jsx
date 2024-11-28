@@ -1,27 +1,21 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "../../utils/axios";
+import { useDispatch } from "react-redux";
+import { asyncLogin } from "../../store/actions/AuthActions";
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    axios
-      .post("/auth/login", {
-        email,
-        password,
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        localStorage.setItem("token", res.data.token);
-        navigate("/");
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-        console.log(err);
-      });
+    const userData = {
+      email,
+      password,
+    };
+    dispatch(asyncLogin(userData));
+    navigate("/");
   };
   const handleGoogleSignup = () => {
     try {
