@@ -7,50 +7,11 @@ import { asyncSignUp } from "../../store/actions/AuthActions";
 const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const name = e.target.name.value;
-    const username = e.target.username.value;
-    const bio = e.target.bio.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const phone = e.target.phone.value;
-    const profilePicture = e.target.profilePicture.files[0];
-    // console.log(name, username, bio, email, password, phone, profilePicture);
-
-    const userData = {
-      name,
-      username,
-      bio,
-      email,
-      password,
-      phone,
-      // profilePicture,
-    };
-
-    dispatch(asyncSignUp(userData));
+  const { register, handleSubmit, reset } = useForm();
+  const handleSubmitForm = (data) => {
+    dispatch(asyncSignUp(data));
+    reset();
     navigate("/");
-
-    // axios
-    // axios
-    //   .post("/auth/signup", {
-    //     name,
-    //     username,
-    //     bio,
-    //     email,
-    //     password,
-    //     phone,
-    //     // profilePicture,
-    //   })
-    //   .then((res) => {
-    //     toast.success(res.data.message);
-    //     localStorage.setItem("token", res.data.token);
-    //     navigate("/");
-    //   })
-    //   .catch((err) => {
-    //     toast.error(err.response.data.message);
-    //     //   console.log(err);
-    //   });
   };
   const handleGoogleSignup = () => {
     try {
@@ -65,54 +26,54 @@ const Signup = () => {
         <h1 className="text-2xl font-semibold mb-4">Signup</h1>
         <form
           className="flex flex-col items-end justify-center gap-2"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(handleSubmitForm)}
         >
           <input
             className="border-b-[0.1vh] w-full border-zinc-400 outline-none"
             type="text"
             placeholder="Name"
-            name="name"
+            {...register("name")}
             required
           />
           <input
             className="border-b-[0.1vh] w-full border-zinc-400 outline-none mt-3 "
             type="text"
             placeholder="Username"
-            name="username"
+            {...register("username")}
             required
           />
           <input
             className="border-b-[0.1vh] w-full border-zinc-400 outline-none mt-3 "
             type="text"
             placeholder="Bio"
-            name="bio"
+            {...register("bio")}
             required
           />
           <input
             className="border-b-[0.1vh] w-full border-zinc-400 outline-none mt-3 "
             type="text"
             placeholder="Phone"
-            name="phone"
+            {...register("phone")}
             required
           />
           <input
             className="border-b-[0.1vh] w-full border-zinc-400 outline-none mt-3 "
             type="email"
             placeholder="Email"
-            name="email"
+            {...register("email")}
             required
           />
           <input
             className="border-b-[0.1vh] w-full border-zinc-400 outline-none mt-3 "
             type="password"
             placeholder="Password"
-            name="password"
+            {...register("password")}
             required
           />
           <input
             className="border-2 border-gray-200 rounded-sm p-2 w-full cursor-pointer mt-3 text-xs"
             type="file"
-            name="profilePicture"
+            {...register("profilePicture")}
             accept="image/*"
           />
           <button

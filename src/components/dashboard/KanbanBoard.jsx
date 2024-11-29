@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { DndContext } from "@dnd-kit/core";
-import axios from "../../utils/axios";
 import Column from "./Column";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import AddTask from "./AddTask";
+import {
+  asyncGetTasks,
+  asyncUpdateTask,
+  asyncAddTask,
+} from "../../store/actions/KanbanActions";
 const KanbanBoard = () => {
-  const [tasks, setTasks] = useState([]);
+  const dispatch = useDispatch();
+  const { tasks } = useSelector((state) => state.kanbanReducer);
+
+  const [showModal, setShowModal] = useState(false);
 
   const columns = [
     { status: "To-Do", title: "To Do" },
@@ -12,14 +21,18 @@ const KanbanBoard = () => {
     { status: "Done", title: "Done" },
   ];
 
-  const getTasks = () => {
-    axios
-      .get("/tasks")
-      .then((res) => {
-        // console.log(res);
-        setTasks(res.data);
-      })
-      .catch((err) => console.error(err));
+  const getTasks = useCallback(async () => {
+    try {
+      await dispatch(asyncGetTasks());
+    } catch (error) {
+      console.error("Failed to fetch tasks:", error);
+      toast.error("Failed to load tasks. Retrying...");
+      setTimeout(getTasks, 3000); // Retry mechanism
+    }
+  }, [dispatch]);
+
+  const handleAddTask = (taskData) => {
+    dispatch(asyncAddTask(taskData));
   };
 
   const handleDragEnd = (e) => {
@@ -28,31 +41,27 @@ const KanbanBoard = () => {
     if (!over) return;
     const taskId = active.id;
     const newStatus = over.id;
-
-    const previousTasks = [...tasks];
-    setTasks((prev) =>
-      prev.map((task) =>
-        task._id === taskId ? { ...task, status: newStatus } : task
-      )
-    );
-
-    axios
-      .put(`/tasks/${taskId}`, { status: newStatus })
-      .then((res) => {
-        toast.success("Task moved successfully");
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error("Failed to move task");
-        setTasks(previousTasks);
-      });
+    dispatch(asyncUpdateTask(taskId, newStatus));
   };
   useEffect(() => {
     getTasks();
-  }, []);
+  }, [getTasks]);
 
   return (
-    <div className="h-full w-full rounded-md p-5 shadow-xl ">
+    <div className="h-full w-full rounded-md p-5 shadow-xl relative">
+      <button
+        className="px-4 py-2 bg-blue-600 text-white rounded absolute bottom-5 right-5 shadow-md"
+        onClick={() => setShowModal(true)}
+      >
+        Add New Task
+      </button>
+
+      <AddTask
+        showModal={showModal}
+        setShowModal={setShowModal}
+        handleAddTask={handleAddTask}
+      />
+
       <div className="flex gap-10 w-full">
         <DndContext onDragEnd={handleDragEnd}>
           {columns.map((column, i) => (

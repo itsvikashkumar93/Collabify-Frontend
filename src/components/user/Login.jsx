@@ -6,15 +6,10 @@ import { asyncLogin } from "../../store/actions/AuthActions";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const userData = {
-      email,
-      password,
-    };
-    dispatch(asyncLogin(userData));
+  const { register, handleSubmit, reset } = useForm();
+  const handleSubmitForm = (data) => {
+    dispatch(asyncLogin(data));
+    reset();
     navigate("/");
   };
   const handleGoogleSignup = () => {
@@ -30,20 +25,20 @@ const Login = () => {
         <h1 className="text-2xl font-semibold mb-4">Login</h1>
         <form
           className="flex flex-col items-start justify-center gap-2"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(handleSubmitForm)}
         >
           <input
             className="border-b-[0.1vh] w-full border-zinc-400 outline-none"
             type="email"
             placeholder="Email"
-            name="email"
+            {...register("email")}
             required
           />
           <input
             className="border-b-[0.1vh] w-full border-zinc-400 outline-none mt-3"
             type="password"
             placeholder="Password"
-            name="password"
+            {...register("password")}
             required
           />
 
