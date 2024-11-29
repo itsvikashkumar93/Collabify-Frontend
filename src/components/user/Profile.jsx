@@ -1,31 +1,22 @@
-import React, { useEffect, useState } from "react";
-import axios from "../../utils/axios";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../home/Navbar";
+import { useSelector, useDispatch } from "react-redux";
+import { asyncGetUserProfile } from "../../store/actions/UserActions";
+
 const Profile = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({});
+  const { profile, loading, error } = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");
     }
-    axios
-      .get("/user/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        setUser(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(asyncGetUserProfile());
   }, []);
   return (
-    user && (
+    profile && (
       <div className="w-full h-screen">
         <Navbar />
         <div className="w-full h-[92vh] flex justify-center items-center">
@@ -33,14 +24,16 @@ const Profile = () => {
             <h1 className="text-2xl font-semibold mb-4">Your Info</h1>
             <div className="shadow-md p-4 rounded-md bg-[#ffffff]">
               <img
-                src={user.profilePicture ? user.profilePicture : "avatar.png"}
+                src={
+                  profile.profilePicture ? profile.profilePicture : "avatar.png"
+                }
                 alt="avatar"
                 className="w-24 h-24 rounded-full object-cover"
               />
               <hr className="my-3 border-gray-300" />
               <div className="flex justify-between items-center gap-2">
                 <h5 className="">Full Name</h5>
-                <h4 className="">{user.name}</h4>
+                <h4 className="">{profile.name}</h4>
                 <Link to="/edit-profile" className="underline ">
                   Edit Profile
                 </Link>
@@ -51,14 +44,14 @@ const Profile = () => {
               <hr className="border-gray-300 my-3" />
               <div className="flex justify-between items-center gap-2">
                 <h5 className="">Email</h5>
-                <h4 className="">{user.email}</h4>
+                <h4 className="">{profile.email}</h4>
               </div>
-              {user.phone && (
+              {profile.phone && (
                 <>
                   <hr className="border-gray-300 my-3" />
                   <div className="flex justify-between items-center gap-2">
                     <h5 className="">Phone Number</h5>
-                    <h4 className="">{user.phone}</h4>
+                    <h4 className="">{profile.phone}</h4>
                   </div>
                 </>
               )}
